@@ -28,27 +28,26 @@ import (
 // 	io.Copy(w, f)
 // }
 
-
 func main() {
 
 	cache := make(map[string]*template.Template)
 
-	config := Config {
-		Port: "3000",
-		Env: "dev",
+	config := Config{
+		Port:    "3000",
+		Env:     "dev",
 		Version: "1.0.0",
 	}
 
-	app := Application {
-	Config: config,
-	Cache: cache,
+	app := Application{
+		Config: config,
+		Cache:  cache,
 	}
 
 	app.Routes()
 	log.Printf("Servidor ' %s ' escutando na porta %s", config.Env, config.Port)
 
 	err := http.ListenAndServe(fmt.Sprintf(":%s", config.Port), nil)
-	
+
 	if err != nil {
 		log.Println(err)
 	}

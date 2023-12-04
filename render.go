@@ -1,11 +1,17 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 )
+
+//usado para embutir arquivos que não são do tipo .go no build
+
+//go:embed templates
+var TemplateFS embed.FS
 
 // RenderTemplate renderiza uma página usando um template e escreve o resultado em http.ResponseWriter.
 func (a *Application) RenderTemplate(w http.ResponseWriter, page string) {
@@ -19,8 +25,10 @@ func (a *Application) RenderTemplate(w http.ResponseWriter, page string) {
 	// Se a página não está em cache ou estamos no ambiente de desenvolvimento ("dev").
 	if !exists || a.Config.Env == "dev" {
 		// Faz o parse dos arquivos de template.
-		t, err = template.ParseFiles(
+		t, err = template.ParseFS(
+			TemplateFS,
 			"templates/"+page+".html",
+			"templates/navbar.html",
 			"templates/base.html",
 		)
 		// Se houver um erro no parse, imprime o erro no log e retorna.
@@ -38,5 +46,15 @@ func (a *Application) RenderTemplate(w http.ResponseWriter, page string) {
 	}
 
 	// Executa o template, escrevendo o resultado em http.ResponseWriter.
-	t.Execute(w, nil)
+	// podemos passar um objeto no como parametro
+
+	contact := struct {
+		Email    string
+		Contacto string
+	}{
+		Email:    "erinaldogomes@gmail.coom",
+		Contacto: "099929292",
+	}
+
+	t.Execute(w, contact)
 }

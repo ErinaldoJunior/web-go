@@ -12,7 +12,7 @@ func (app *Application) HomeHandler(w http.ResponseWriter, _ *http.Request) {
 	app.RenderTemplate(w, "index")
 
 }
-func (app *Application)AboutHandler(w http.ResponseWriter, _ *http.Request) {
+func (app *Application) AboutHandler(w http.ResponseWriter, _ *http.Request) {
 	app.RenderTemplate(w, "about")
 
 }
