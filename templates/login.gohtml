@@ -1,0 +1,30 @@
+{{template "base" .}} {{define "title"}} ENTRAR {{ end }} {{define "content"}}
+<div class="conteudo">
+  <form action="/loginPage" method="post" class="login">
+    <h1 class="h3 mb-3 fw-normal">Login</h1>
+
+    <div class="form-floating">
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        placeholder="name@example.com"
+        name="email"
+      />
+      <label for="email">E-mail</label>
+    </div>
+    <div class="form-floating">
+      <input
+        type="password"
+        class="form-control"
+        id="senha"
+        placeholder="Password"
+        name="senha"
+      />
+      <label for="senha">Senha</label>
+    </div>
+    <button class="btn btn-primary w-100 py-2" type="submit">Entrar</button>
+  </form>
+</div>
+
+{{ end }}

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"embed"
 	"fmt"
 	"html/template"
 	"log"
@@ -10,8 +9,8 @@ import (
 
 //usado para embutir arquivos que não são do tipo .go no build
 
-//go:embed templates
-var TemplateFS embed.FS
+// comentario...go:embed templates
+//var TemplateFS embed.FS
 
 // RenderTemplate renderiza uma página usando um template e escreve o resultado em http.ResponseWriter.
 func (a *Application) RenderTemplate(w http.ResponseWriter, page string) {
@@ -25,12 +24,20 @@ func (a *Application) RenderTemplate(w http.ResponseWriter, page string) {
 	// Se a página não está em cache ou estamos no ambiente de desenvolvimento ("dev").
 	if !exists || a.Config.Env == "dev" {
 		// Faz o parse dos arquivos de template.
-		t, err = template.ParseFS(
-			TemplateFS,
-			"templates/"+page+".html",
-			"templates/navbar.html",
-			"templates/base.html",
+		// t, err = template.ParseFS(
+		// 	TemplateFS,
+		// 	"templates/"+page+".html",
+		// 	"templates/navbar.html",
+		// 	"templates/login.html",
+		// 	"templates/base.html",
+		// )
+
+		t, err = template.ParseFiles(
+			"templates/"+page+".gohtml",
+			"templates/navbar.gohtml",
+			"templates/base.gohtml",
 		)
+
 		// Se houver um erro no parse, imprime o erro no log e retorna.
 		if err != nil {
 			log.Println(err)
@@ -52,9 +59,11 @@ func (a *Application) RenderTemplate(w http.ResponseWriter, page string) {
 		Email    string
 		Contacto string
 	}{
-		Email:    "erinaldogomes@gmail.coom",
+		Email:    "erinalomes@gmail.coom",
 		Contacto: "099929292",
 	}
+
+	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
 
 	t.Execute(w, contact)
 }
