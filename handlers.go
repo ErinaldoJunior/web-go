@@ -101,11 +101,15 @@ func (app *Application) AdminHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		http.Redirect(w, r, "/login", http.StatusUnauthorized)
 	}
-
 }
 
 func (app *Application) CreateAccHandler(w http.ResponseWriter, r *http.Request) {
 
+	app.RenderTemplate(w, r, "createaccount")
+
+}
+
+func (app *Application) CreaterUserHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
 		return
@@ -118,5 +122,5 @@ func (app *Application) CreateAccHandler(w http.ResponseWriter, r *http.Request)
 	//senha2 := r.FormValue("senha2")
 
 	app.InsertUsers(email, nome, contacto, senha)
-	app.RenderTemplate(w, r, "index")
+	http.Redirect(w, r, "/admin", http.StatusSeeOther)
 }

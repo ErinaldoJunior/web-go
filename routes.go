@@ -12,6 +12,7 @@ func (app *Application) Routes() {
 	http.HandleFunc("/logout", app.LogoutHandler)
 	http.HandleFunc("/admin", app.AdminHandler)
 	http.HandleFunc("/createaccount", app.CreateAccHandler)
+	http.HandleFunc("/newAcc", app.CreaterUserHandler)
 
 	// vamos utilizar a função http.FileServer para servir conteúdo estático de forma mais fácil
 	// neste caso, é usado para servir os ficheiros js e css
