@@ -14,3 +14,7 @@ type Application struct {
 	Config Config
 	Cache  map[string]*template.Template
 }
+
+type User struct {
+	Nome string
+}

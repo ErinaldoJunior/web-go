@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
 	"golang.org/x/crypto/bcrypt"
@@ -87,4 +88,27 @@ func (app *Application) VerificaUsuario(email, senha string) bool {
 		fmt.Println("Senha incorreta!")
 		return false
 	}
+}
+
+func (app *Application) GetUserByName(userEmail string) (User, error) {
+	var user User
+	db, _ := sql.Open("mysql", "root@tcp(localhost:3306)/appwebgo")
+
+	query := "SELECT email FROM usuario WHERE nome = ?"
+
+	err := db.QueryRow(query, userEmail).Scan(&user.Nome)
+
+	if err != nil {
+		return User{}, err
+	}
+
+	return user, nil
+}
+
+func (app *Application) IsAuthenticated(r *http.Request) bool {
+	cookie, err := r.Cookie("IsAuthenticated")
+	if err == nil && cookie.Value == "true" {
+		return true
+	}
+	return false
 }

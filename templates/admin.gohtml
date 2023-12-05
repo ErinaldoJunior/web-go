@@ -1,3 +1,10 @@
 {{template "base" .}} {{define "title"}} Admin {{ end }} {{define "content"}}
 <h1>Painel de admin</h1>
+<p>Bem vindo: {{.CurrentUser.Nome}}</p>
+{{if .IsAuthenticated}}
+<h1>Bem-vindo à Área Administrativa!</h1>
+<!-- Conteúdo adicional para usuários autenticados -->
+{{else}}
+<h1>Você não está autenticado. Por favor, faça o login.</h1>
+{{ end }}
 {{ end }}

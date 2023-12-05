@@ -7,13 +7,18 @@ import (
 	"net/http"
 )
 
+var IsAuth bool = false
+
 //usado para embutir arquivos que não são do tipo .go no build
 
 // comentario...go:embed templates
 //var TemplateFS embed.FS
 
 // RenderTemplate renderiza uma página usando um template e escreve o resultado em http.ResponseWriter.
-func (a *Application) RenderTemplate(w http.ResponseWriter, page string) {
+func (a *Application) RenderTemplate(w http.ResponseWriter, r *http.Request, page string) {
+
+	// verifico se o usuario está autenticado através dos valores que estão nos cookies
+	IsAuth = a.IsAuthenticated(r)
 	// Declaração de variáveis para o template e erro.
 	var t *template.Template
 	var err error
@@ -55,15 +60,14 @@ func (a *Application) RenderTemplate(w http.ResponseWriter, page string) {
 	// Executa o template, escrevendo o resultado em http.ResponseWriter.
 	// podemos passar um objeto no como parametro
 
-	contact := struct {
-		Email    string
-		Contacto string
+	// aqui no data eu passo o valor que está no cookie
+	data := struct {
+		IsAuthenticated bool
 	}{
-		Email:    "erinalomes@gmail.coom",
-		Contacto: "099929292",
+		IsAuthenticated: IsAuth,
 	}
 
 	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
 
-	t.Execute(w, contact)
+	t.Execute(w, data)
 }
