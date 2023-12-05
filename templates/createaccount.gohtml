@@ -1,0 +1,51 @@
+{{template "base" .}} {{define "title"}} criar conta {{ end }}
+{{define "content"}}
+<div class="conteudo">
+  <form action="/createAcc" method="post" class="login">
+    <h1 class="h3 mb-3 fw-normal">Criar conta</h1>
+
+    <div class="form-floating">
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        placeholder="name@example.com"
+        name="email"
+      />
+      <label for="email">E-mail</label>
+    </div>
+    <div class="form-floating">
+      <input type="text" class="form-control" id="nome" name="nome" />
+      <label for="email">Nome completo</label>
+    </div>
+    <div class="form-floating">
+      <input type="number" class="form-control" id="contacto" name="contacto" />
+      <label for="email">Contacto</label>
+    </div>
+    <div class="form-floating">
+      <input
+        type="password"
+        class="form-control"
+        id="senha"
+        placeholder="Password"
+        name="senha"
+      />
+      <label for="senha">Senha</label>
+    </div>
+    <div class="form-floating">
+      <input
+        type="password"
+        class="form-control"
+        id="senha2"
+        placeholder="Password"
+        name="senha2"
+      />
+      <label for="senha2">Informe novamente a senha</label>
+    </div>
+    <button class="btn btn-primary w-100 py-2" type="submit">
+      Criar conta
+    </button>
+  </form>
+</div>
+
+{{ end }}
