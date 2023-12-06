@@ -1,28 +1,36 @@
 package main
 
 import (
-	"html/template"
-	"log"
 	"net/http"
 )
+
+var IsAuth bool = false
 
 // os templates sao usados para servir conteudos dinamicos
 // para executar os templates criamos esta funcao
 func (app *Application) ContactHandler(w http.ResponseWriter, r *http.Request) {
-	app.RenderTemplate(w, r, "contact")
+	app.RenderTemplate(w, r, "contact", TemplateData{
+		IsAuthenticated: IsAuth,
+	})
 
 }
 func (app *Application) HomeHandler(w http.ResponseWriter, r *http.Request) {
-	app.RenderTemplate(w, r, "index")
+	app.RenderTemplate(w, r, "index", TemplateData{
+		IsAuthenticated: IsAuth,
+	})
 
 }
 func (app *Application) AboutHandler(w http.ResponseWriter, r *http.Request) {
-	app.RenderTemplate(w, r, "about")
+	app.RenderTemplate(w, r, "about", TemplateData{
+		IsAuthenticated: IsAuth,
+	})
 
 }
 
 func (app *Application) PageLoginHandler(w http.ResponseWriter, r *http.Request) {
-	app.RenderTemplate(w, r, "login")
+	app.RenderTemplate(w, r, "login", TemplateData{
+		IsAuthenticated: IsAuth,
+	})
 }
 
 // responsável pelo logout
@@ -68,35 +76,14 @@ func (app *Application) AdminHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		http.SetCookie(w, &cookie)
 
-		var t *template.Template
-		var err error
-
-		t, err = template.ParseFiles(
-			"templates/admin.gohtml",
-			"templates/navbar.gohtml",
-			"templates/base.gohtml",
-		)
-
-		// Se houver um erro no parse, imprime o erro no log e retorna.
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
 		// Executa o template, escrevendo o resultado em http.ResponseWriter.
 		// podemos passar um objeto no como parametro
 		user, _ := app.GetUserByName(email)
 
-		// eu passo essa data por causa do nome do usuario
-		data := struct {
-			IsAuthenticated bool
-			CurrentUser     User
-		}{
+		app.RenderTemplate(w, r, "admin", TemplateData{
 			IsAuthenticated: IsAuth,
 			CurrentUser:     user,
-		}
-
-		t.Execute(w, data)
+		})
 		return
 	} else {
 		http.Redirect(w, r, "/login", http.StatusUnauthorized)
@@ -105,7 +92,9 @@ func (app *Application) AdminHandler(w http.ResponseWriter, r *http.Request) {
 
 func (app *Application) CreateAccHandler(w http.ResponseWriter, r *http.Request) {
 
-	app.RenderTemplate(w, r, "createaccount")
+	app.RenderTemplate(w, r, "createaccount", TemplateData{
+		IsAuthenticated: IsAuth,
+	})
 
 }
 
